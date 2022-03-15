@@ -54,7 +54,11 @@ export default class App extends React.Component {
       );
   };
 
-  handleCitySelect = (selectedCity) => this.setState({ selectedCity });
+  handleCitySelect = (selectedCity) => {
+    this.setState({ selectedCity });
+
+    this.getWeatherForCity(selectedCity);
+  };
 
   render() {
     const { selectedCity, isLoading, hasError, weatherData } = this.state;
@@ -109,9 +113,12 @@ export default class App extends React.Component {
                 <Col>
                   <div>Today</div>
                   <div>
-                    <span>image</span>
-                    <div>19&deg;</div>
-                    <div>Clouds</div>
+                    <img
+                      src={`http://openweathermap.org/img/w/${weatherData.list[0].weather[0].icon}.png`}
+                      alt={weatherData.list[0].weather[0].description}
+                    />
+                    <div>{Math.round(weatherData.list[0].temp.day)}&deg;</div>
+                    <div>{weatherData.list[0].weather[0].main}</div>
                   </div>
                 </Col>
               </Row>

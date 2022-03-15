@@ -72,8 +72,12 @@ export default class App extends React.Component {
 
     if (isLoading) {
       return (
-        <Row justify="center" align="middle">
-          <Col xs={24} md={20} lg={16} xl={12} xxl={4}>
+        <Row
+          justify="center"
+          align="middle"
+          style={{ width: "100vw", height: "100vh" }}
+        >
+          <Col span={24} style={{ textAlign: "center" }}>
             <Spin />
           </Col>
         </Row>

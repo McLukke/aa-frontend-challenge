@@ -1,11 +1,11 @@
 import React from "react";
-import { Row, Col, Layout } from "antd";
+import { Row, Col } from "antd";
 import Card from "./components/Card";
-import Section from "./components/Section";
 
 import styles from "./App.module.scss";
 
 const cities = ["Ottawa", "Moscow", "Tokyo"];
+const apiKey = "e47851098af3179c1a8ee53df6ee4a93";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -13,14 +13,54 @@ export default class App extends React.Component {
 
     this.state = {
       selectedCity: cities[0],
+      isLoading: false,
+      weatherData: null,
+      hasError: null,
     };
   }
+
+  componentDidMount() {
+    const { selectedCity } = this.state;
+
+    this.getWeatherForCity(selectedCity);
+  }
+
+  getWeatherForCity = (city) => {
+    this.setState({ isLoading: true, weatherData: null, hasError: null });
+
+    fetch(
+      `https://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&appid=${apiKey}`
+    )
+      .then((res) => res.json())
+      .then((res) =>
+        this.setState({
+          isLoading: false,
+          weatherData: {
+            ...res,
+            list: res.list
+              .sort((prev, next) => prev.dt - next.dt)
+              .map((forecast) => ({
+                ...forecast,
+                date: new Date(forecast.dt * 1000 - res.city.timezone * 1000),
+              })),
+          },
+        })
+      )
+      .catch((err) =>
+        this.setState({
+          isLoading: false,
+          hasError: err,
+        })
+      );
+  };
 
   handleCitySelect = (selectedCity) => this.setState({ selectedCity });
 
   render() {
-    const { selectedCity } = this.state;
-    const dudUrl = "#";
+    const { selectedCity, weatherData } = this.state;
+    const noopUrl = "#";
+
+    console.log("weatherData: ", weatherData);
 
     return (
       <>
@@ -30,7 +70,7 @@ export default class App extends React.Component {
               {cities.map((city) => (
                 <a
                   key={city}
-                  href={dudUrl}
+                  href={noopUrl}
                   className={city === selectedCity ? styles.active : ""}
                   onClick={() => this.handleCitySelect(city)}
                 >
@@ -70,20 +110,6 @@ export default class App extends React.Component {
                 </Col>
               </Row>
             </Card>
-            {/* <Section smoothRadius>
-              <Section style={{ display: "flex" }} showPadding>
-                <div>Today</div>
-                <div>
-                  <span>image</span>
-                  <div>19&deg;</div>
-                  <div>Clouds</div>
-                </div>
-              </Section>
-              <Section showPadding>test1</Section>
-              <Section showPadding>test2</Section>
-              <Section showPadding>test3</Section>
-              <Section showPadding>test4</Section>
-            </Section> */}
           </Col>
         </Row>
       </>

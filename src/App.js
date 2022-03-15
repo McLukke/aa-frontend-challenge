@@ -113,25 +113,27 @@ export default class App extends React.Component {
         <Row justify="center" align="middle">
           <Col xs={24} md={20} lg={16} xl={12} xxl={4}>
             <Card>
-              <Row justify="center">
-                <Col>
-                  <div>Today</div>
+              <div className={styles.todaySection}>
+                <div className={styles.todayTitle}>Today</div>
+                <div>
+                  <img
+                    src={`http://openweathermap.org/img/w/${weatherData.list[0].weather[0].icon}.png`}
+                    alt={weatherData.list[0].weather[0].description}
+                  />
                   <div>
-                    <img
-                      src={`http://openweathermap.org/img/w/${weatherData.list[0].weather[0].icon}.png`}
-                      alt={weatherData.list[0].weather[0].description}
-                    />
-                    <div>{Math.round(weatherData.list[0].temp.day)}&deg;</div>
+                    <div className={styles.todayDeg}>
+                      {Math.round(weatherData.list[0].temp.day)}&deg;
+                    </div>
                     <div>{weatherData.list[0].weather[0].main}</div>
                   </div>
-                </Col>
-              </Row>
+                </div>
+              </div>
 
               <Row justify="center">
                 {weatherData.list.slice(1, 5).map((forecast) => (
                   <Col
                     key={`forecast-${forecast.date.toString().split(" ")[0]}`}
-                    className={styles.forecastCard}
+                    className={styles.forecastSection}
                     xs={6}
                   >
                     {forecast.date.toString().split(" ")[0]}

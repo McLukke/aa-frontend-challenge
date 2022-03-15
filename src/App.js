@@ -31,7 +31,13 @@ export default class App extends React.Component {
     fetch(
       `https://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&appid=${apiKey}&units=metric`
     )
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+
+        throw new Error("Server Error");
+      })
       .then((res) =>
         this.setState({
           isLoading: false,
@@ -85,8 +91,6 @@ export default class App extends React.Component {
       return <Empty />;
     }
 
-    console.log("weatherData: ", weatherData);
-
     return (
       <>
         <Row justify="center" align="middle">
@@ -127,7 +131,7 @@ export default class App extends React.Component {
                 {weatherData.list.slice(1, 5).map((forecast) => (
                   <Col
                     key={`forecast-${forecast.date.toString().split(" ")[0]}`}
-                    style={{ border: "1px solid white" }}
+                    className={styles.forecastCard}
                     xs={6}
                   >
                     {forecast.date.toString().split(" ")[0]}

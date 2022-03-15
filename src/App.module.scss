@@ -11,6 +11,7 @@
     &:active,
     &.active {
       color: #5fb0e8;
+      font-weight: bold;
     }
   }
 }
@@ -42,10 +43,18 @@
   }
 }
 
-.forecastSection {
-  border-top: 1px solid white;
+.forecastBorder {
+  border-top: 2px solid white;
 
   &:not(:last-of-type) {
-    border-right: 1px solid white;
+    border-right: 2px solid white;
   }
+}
+
+.forecastSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }

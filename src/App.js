@@ -133,15 +133,17 @@ export default class App extends React.Component {
                 {weatherData.list.slice(1, 5).map((forecast) => (
                   <Col
                     key={`forecast-${forecast.date.toString().split(" ")[0]}`}
-                    className={styles.forecastSection}
+                    className={styles.forecastBorder}
                     xs={6}
                   >
-                    {forecast.date.toString().split(" ")[0]}
-                    <img
-                      src={`http://openweathermap.org/img/w/${forecast.weather[0].icon}.png`}
-                      alt={forecast.weather[0].description}
-                    />
-                    {Math.round(forecast.temp.day)}&deg;
+                    <div className={styles.forecastSection}>
+                      {forecast.date.toString().split(" ")[0]}
+                      <img
+                        src={`http://openweathermap.org/img/w/${forecast.weather[0].icon}.png`}
+                        alt={forecast.weather[0].description}
+                      />
+                      {Math.round(forecast.temp.day)}&deg;
+                    </div>
                   </Col>
                 ))}
               </Row>

@@ -1,5 +1,6 @@
 import React from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Layout } from "antd";
+import Card from "./components/Card";
 import Section from "./components/Section";
 
 import styles from "./App.module.scss";
@@ -42,7 +43,34 @@ export default class App extends React.Component {
 
         <Row justify="center" align="middle">
           <Col xs={24} md={20} lg={16} xl={12} xxl={4}>
-            <Section smoothRadius>
+            <Card>
+              <Row justify="center">
+                <Col>
+                  <div>Today</div>
+                  <div>
+                    <span>image</span>
+                    <div>19&deg;</div>
+                    <div>Clouds</div>
+                  </div>
+                </Col>
+              </Row>
+
+              <Row justify="center">
+                <Col style={{ border: "1px solid white" }} xs={6}>
+                  test 1
+                </Col>
+                <Col style={{ border: "1px solid white" }} xs={6}>
+                  test 2
+                </Col>
+                <Col style={{ border: "1px solid white" }} xs={6}>
+                  test 3
+                </Col>
+                <Col style={{ border: "1px solid white" }} xs={6}>
+                  test 4
+                </Col>
+              </Row>
+            </Card>
+            {/* <Section smoothRadius>
               <Section style={{ display: "flex" }} showPadding>
                 <div>Today</div>
                 <div>
@@ -55,7 +83,7 @@ export default class App extends React.Component {
               <Section showPadding>test2</Section>
               <Section showPadding>test3</Section>
               <Section showPadding>test4</Section>
-            </Section>
+            </Section> */}
           </Col>
         </Row>
       </>

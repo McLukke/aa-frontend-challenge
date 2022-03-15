@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Spin, Empty } from "antd";
 import Card from "./components/Card";
 
 import styles from "./App.module.scss";
@@ -29,7 +29,7 @@ export default class App extends React.Component {
     this.setState({ isLoading: true, weatherData: null, hasError: null });
 
     fetch(
-      `https://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&appid=${apiKey}`
+      `https://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&appid=${apiKey}&units=metric`
     )
       .then((res) => res.json())
       .then((res) =>
@@ -57,8 +57,29 @@ export default class App extends React.Component {
   handleCitySelect = (selectedCity) => this.setState({ selectedCity });
 
   render() {
-    const { selectedCity, weatherData } = this.state;
+    const { selectedCity, isLoading, hasError, weatherData } = this.state;
     const noopUrl = "#";
+
+    if (isLoading) {
+      return (
+        <Row justify="center" align="middle">
+          <Col xs={24} md={20} lg={16} xl={12} xxl={4}>
+            <Spin />
+          </Col>
+        </Row>
+      );
+    }
+
+    if (hasError) {
+      return <div>An error occurred while fetching data. {hasError}</div>;
+    }
+
+    if (
+      !weatherData ||
+      (weatherData && Object.keys(weatherData).length === 0)
+    ) {
+      return <Empty />;
+    }
 
     console.log("weatherData: ", weatherData);
 
@@ -96,18 +117,20 @@ export default class App extends React.Component {
               </Row>
 
               <Row justify="center">
-                <Col style={{ border: "1px solid white" }} xs={6}>
-                  test 1
-                </Col>
-                <Col style={{ border: "1px solid white" }} xs={6}>
-                  test 2
-                </Col>
-                <Col style={{ border: "1px solid white" }} xs={6}>
-                  test 3
-                </Col>
-                <Col style={{ border: "1px solid white" }} xs={6}>
-                  test 4
-                </Col>
+                {weatherData.list.slice(1, 5).map((forecast) => (
+                  <Col
+                    key={`forecast-${forecast.date.toString().split(" ")[0]}`}
+                    style={{ border: "1px solid white" }}
+                    xs={6}
+                  >
+                    {forecast.date.toString().split(" ")[0]}
+                    <img
+                      src={`http://openweathermap.org/img/w/${forecast.weather[0].icon}.png`}
+                      alt={forecast.weather[0].description}
+                    />
+                    {Math.round(forecast.temp.day)}&deg;
+                  </Col>
+                ))}
               </Row>
             </Card>
           </Col>
